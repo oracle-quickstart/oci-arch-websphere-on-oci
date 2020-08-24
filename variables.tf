@@ -83,7 +83,11 @@ variable "OsImage" {
 }
 variable "ATP_tde_wallet_zip_file" {default = "tde_wallet_ATPdb1.zip"}
 
+variable "numberOfBastions" {default = 1}
+variable "boot_volume_size_bastion" {default = 50}
+
 variable "numberOfNodes" {default = 1}
+variable "boot_volume_size_appserver" {default = 50}
 
 variable "atp_password" {}
 variable "atp_db_name" {}

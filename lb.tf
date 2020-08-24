@@ -9,7 +9,7 @@ resource "oci_load_balancer" "lb01" {
     oci_core_subnet.vcn01_subnet_pub01.id,
   ]
 
-  network_security_group_ids = oci_core_network_security_group.LBSecurityGroup.id
+  network_security_group_ids = [oci_core_network_security_group.LBSecurityGroup.id]
   
   display_name = "load_balancer_01"
 }
@@ -39,7 +39,7 @@ resource "oci_load_balancer_listener" "lb_listener_app01" {
   protocol                 = "HTTP"
 }
 
-# resource "oci_load_balancer_backend" "lb_be_webserver1" {
+# resource "oci_load_balancer_backend" "lb_be_appserver1" {
 #   count = var.numberOfNodes
 #   load_balancer_id = oci_load_balancer.lb01.id
 #   backendset_name  = oci_load_balancer_backend_set.lb_be_app01.name

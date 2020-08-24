@@ -2,10 +2,10 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "oci_core_instance" "bastion1" {
-  count = 1 # var.numberOfNodes
+  count = var.numberOfBastions
   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
   compartment_id = var.compartment_ocid
-  display_name = "bastion" #[count.index]
+  display_name = "bastion"
   shape = var.InstanceShape
 
   create_vnic_details {
@@ -18,7 +18,6 @@ resource "oci_core_instance" "bastion1" {
   source_details {
     source_type = "image"
     source_id   = lookup(data.oci_core_images.OSImageLocal.images[0], "id")
-    # source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
     boot_volume_size_in_gbs = "50"
   }
 
@@ -31,14 +30,14 @@ resource "oci_core_instance" "bastion1" {
 }
 
 data "oci_core_vnic_attachments" "bastion1_primaryvnic_attach" {
-  count = 1 #var.numberOfNodes
+  count = var.numberOfBastions
   availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[0], "name")
   compartment_id = var.compartment_ocid
   instance_id         = oci_core_instance.bastion1[count.index].id
 }
 
 data "oci_core_vnic" "bastion1_primaryvnic" {
-  count = 1 #var.numberOfNodes
+  count = var.numberOfBastions
   vnic_id = data.oci_core_vnic_attachments.bastion1_primaryvnic_attach[count.index].vnic_attachments.0.vnic_id
 }
 
