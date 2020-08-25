@@ -18,6 +18,11 @@ resource "oci_load_balancer_backend_set" "lb_be_app01" {
   name             = "lb_app01"
   load_balancer_id = oci_load_balancer.lb01.id
   policy           = "ROUND_ROBIN"
+  
+  # If you want to swithc the algorithm
+  # policy           = "LEAST_CONNECTIONS"
+  # or
+  # policy           = "FAIL-OVER"
 
   health_checker {
     port                = "9050"
@@ -39,15 +44,18 @@ resource "oci_load_balancer_listener" "lb_listener_app01" {
   protocol                 = "HTTP"
 }
 
-# resource "oci_load_balancer_backend" "lb_be_appserver1" {
-#   count = var.numberOfNodes
-#   load_balancer_id = oci_load_balancer.lb01.id
-#   backendset_name  = oci_load_balancer_backend_set.lb_be_app01.name
-#   ip_address       = oci_core_instance.webserver1[count.index].private_ip
-#   port             = 9050
-#   backup           = false
-#   drain            = false
-#   offline          = false
-#   weight           = 1
-# }
+# Different backends might be necessary. Replicate this section to deploy multiple backends
+# adjusting to the ports used.
+
+resource "oci_load_balancer_backend" "lb_be_appserver1" {
+  count = var.numberOfNodes
+  load_balancer_id = oci_load_balancer.lb01.id
+  backendset_name  = oci_load_balancer_backend_set.lb_be_app01.name
+  ip_address       = oci_core_instance.webserver1[count.index].private_ip
+  port             = 9050
+  backup           = false
+  drain            = false
+  offline          = false
+  weight           = 1
+}
 
