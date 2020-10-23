@@ -1,4 +1,4 @@
-# oci-ibm-websphere
+# oci-arch-websphere-on-oci
 
 WebSphere Application Server is part of IBM's WebSphere Suite. It hosts Java-based web applications and is built using open standards.
 
